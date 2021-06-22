@@ -5,16 +5,21 @@ import { getProfile } from './middleware/getProfile';
 import contractsRouter from './routes/contracts';
 import jobsRouter from './routes/jobs';
 import balanceRouter from './routes/balances';
+import adminRouter from './routes/admin';
 import CustomError from "./customError";
 
 const app = express();
 app.use(bodyParser.json());
 
+// app.use(getProfile);
+// switch to explicit middleware to allow unconditional admin api access.
+// But I'd rather open admin api on the differrent port to keep data api authentication enabled in a single place
 
-app.use(getProfile);
-app.use('/contracts', contractsRouter);
-app.use('/jobs', jobsRouter);
-app.use('/balances', balanceRouter)
+app.use('/contracts', getProfile, contractsRouter);
+app.use('/jobs', getProfile, jobsRouter);
+app.use('/balances', getProfile, balanceRouter);
+
+app.use('/admin', adminRouter)
 
 app.use((err, req: Request, res: Response, next) => {
     if (err instanceof  CustomError) {

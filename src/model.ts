@@ -70,7 +70,7 @@ Contract.init(
 export class Job extends Sequelize.Model {
     description: string;
     price: number;
-    paid: boolean;
+    paid: boolean;    
     paymentDate: Date;
     getContract: HasOneGetAssociationMixin<Contract>;
     Contract?: Contract;

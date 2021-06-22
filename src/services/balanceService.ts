@@ -36,12 +36,20 @@ export default class BalanceService {
                 throw new CustomError('Validation', "Insufficient balance")
             }
             
-            job.paid = job.price <= payment.amount;
-            job.price -= payment.amount;
+            if (job.price > payment.amount) {
+                // I'd rather add additional column for payed amount. But assume data model is part of the task,
+                // so assuming keeping job price for historical data would be more important then subtracting payment from price   
+                throw new CustomError('Validation', "Incomplete payments not allowed");
+            }
+            
+            job.paid = true;            
+            job.paymentDate = new Date();
             job.Contract.Client.balance -= payment.amount;
+            job.Contract.Contractor.balance += payment.amount;
             
             await job.save();
             await job.Contract.Client.save();
+            await job.Contract.Contractor.save();
         });
     }
     
@@ -59,7 +67,10 @@ export default class BalanceService {
                     as: 'Client',
                     include: {
                         model: Job,
-                        required: true
+                        required: true,
+                        where: {
+                            'paid': { [Op.is] : null }
+                        }
                     }
                 },
                 group: [['Profile.id'] ]

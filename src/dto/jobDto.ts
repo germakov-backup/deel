@@ -8,6 +8,5 @@ export interface JobDto {
 }
 
 export interface JobPayment {
-    amount: number;
-    paymentDate: Date;
+    amount: number;    
 }
