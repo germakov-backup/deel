@@ -1,10 +1,10 @@
-﻿const models = require('../model');
-const { Op } = require('sequelize') 
+﻿import {Contract, Profile} from '../model';
+import { Op } from 'sequelize';
+import CustomError from "../customError"; 
 
-module.exports = class ContractService
+export default class ContractService
 {
-    static async getProfileContracts(profileId) {
-        const {Contract, Profile} = models;
+    static async getProfileContracts(profileId) {        
         const contracts = Contract.findAll({
             where: {
                 status: {
@@ -37,9 +37,7 @@ module.exports = class ContractService
     }
 
     static async getProfileContract(contractId, profileId)
-    {
-        const {Contract, Profile} = models;
-        
+    {   
         const contract = await Contract.findOne({
             where: {
                 id: contractId
@@ -54,9 +52,13 @@ module.exports = class ContractService
                 required: false                
             }]
         });
-                        
-        if (!contract || (contract.Client?.id !== profileId && contract.Contractor?.id !== profileId)) {
-            return null;
+        
+        if (!contract) {
+            throw new CustomError('NotFound', "Profile not found");
+        }
+        
+        if ((contract.Client?.id !== profileId && contract.Contractor?.id !== profileId)) {
+            throw new CustomError('Validation', "Invalid profile access");
         }
         
         return contract;

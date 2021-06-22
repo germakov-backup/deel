@@ -1,11 +1,9 @@
-﻿const models = require('../model');
-const { Op } = require('sequelize')
+﻿import { Profile, Contract, Job } from '../model';
+import { Op } from 'sequelize';
 
-module.exports = class JobsService {
-    
+export default class JobsService {    
     static async getUnpaidJobs(profileId) {
-        const { Profile, Contract, Job } = models;
-        
+               
         const jobs = await Job.findAll({
             where: {
                 paid: { [Op.is] : null },

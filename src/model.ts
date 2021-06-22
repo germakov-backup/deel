@@ -1,11 +1,21 @@
+import {deflate} from "zlib";
+import {HasManyGetAssociationsMixin, HasOneGetAssociationMixin} from "sequelize";
+
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize({
+export const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './database.sqlite3'
 });
 
-class Profile extends Sequelize.Model {}
+export class Profile extends Sequelize.Model {
+    firstName: string;
+    lastName: string;
+    profession: string;
+    balance: number;
+    type: 'client' | 'contractor';    
+}
+
 Profile.init(
   {
     firstName: {
@@ -33,7 +43,14 @@ Profile.init(
   }
 );
 
-class Contract extends Sequelize.Model {}
+export class Contract extends Sequelize.Model {
+    terms: string;
+    status: 'new' | 'in_progress' | 'terminated';
+    getJobs: HasManyGetAssociationsMixin<Job>;
+    Client?: Profile;
+    Contractor?: Profile;
+}
+
 Contract.init(
   {
     terms: {
@@ -50,7 +67,15 @@ Contract.init(
   }
 );
 
-class Job extends Sequelize.Model {}
+export class Job extends Sequelize.Model {
+    description: string;
+    price: number;
+    paid: boolean;
+    paymentDate: Date;
+    getContract: HasOneGetAssociationMixin<Contract>;
+    Contract?: Contract;
+}
+
 Job.init(
   {
     description: {
@@ -75,16 +100,9 @@ Job.init(
   }
 );
 
-Profile.hasMany(Contract, {as :'Contractor',foreignKey:'ContractorId'})
-Contract.belongsTo(Profile, {as: 'Contractor'})
-Profile.hasMany(Contract, {as : 'Client', foreignKey:'ClientId'})
-Contract.belongsTo(Profile, {as: 'Client'})
-Contract.hasMany(Job)
-Job.belongsTo(Contract)
-
-module.exports = {
-  sequelize,
-  Profile,
-  Contract,
-  Job
-};
+Profile.hasMany(Contract, {as :'Contractor',foreignKey:'ContractorId'});
+Contract.belongsTo(Profile, {as: 'Contractor'});
+Profile.hasMany(Contract, {as : 'Client', foreignKey:'ClientId'});
+Contract.belongsTo(Profile, {as: 'Client'});
+Contract.hasMany(Job);
+Job.belongsTo(Contract);
