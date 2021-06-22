@@ -1,11 +1,13 @@
 ﻿import {Contract, Profile} from '../model';
 import { Op } from 'sequelize';
-import CustomError from "../customError"; 
+import CustomError from "../customError";
+import {ContractDetails} from "../dto/contractDto";
+import mappingService from "./mappings"; 
 
 export default class ContractService
 {
-    static async getProfileContracts(profileId) {        
-        const contracts = Contract.findAll({
+    static async getProfileContracts(profileId): Promise<ContractDetails[]> {        
+        const contracts = await Contract.findAll({
             where: {
                 status: {
                     [Op.ne] : 'terminated'
@@ -33,10 +35,10 @@ export default class ContractService
             }]
         });
         
-        return contracts;
+        return contracts.map(c => mappingService.mapContractDetails(c));
     }
 
-    static async getProfileContract(contractId, profileId)
+    static async getProfileContract(contractId, profileId) : Promise<ContractDetails>
     {   
         const contract = await Contract.findOne({
             where: {
@@ -61,6 +63,6 @@ export default class ContractService
             throw new CustomError('Validation', "Invalid profile access");
         }
         
-        return contract;
+        return mappingService.mapContractDetails(contract);
     }
 }

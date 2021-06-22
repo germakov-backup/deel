@@ -34,8 +34,8 @@ router.get('/best-clients', (req: Request<{}, string, {}, ClientsQueryParams>, r
         const end = new Date(req.query.end);
         validateRange(start, end);
         
-        const profession = await reportingService.findBestClients(start, end, req.query.limit || DEFAULT_CLIENTS_LIMIT);
-        return res.status(200).send(profession);
+        const clientsReport = await reportingService.findBestClients(start, end, req.query.limit || DEFAULT_CLIENTS_LIMIT);
+        return res.status(200).send(clientsReport);
     }, next);
 });
 

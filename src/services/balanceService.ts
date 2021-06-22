@@ -10,7 +10,7 @@ type JobsTotalQuery = {
 const jobDepositThresholdRatio = 0.25;
 
 export default class BalanceService {
-    static async payJob(clientId: number, jobId: number, payment: JobPayment) : Promise<boolean> {
+    static async payJob(clientId: number, jobId: number, payment: JobPayment) : Promise<void> {
         return  await sequelize.transaction({
             isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
         }, async (t) => {
@@ -53,7 +53,7 @@ export default class BalanceService {
         });
     }
     
-    static async deposit(userId: number, amount: number) {
+    static async deposit(userId: number, amount: number): Promise<void> {
         return  await sequelize.transaction({
             isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
         }, async (t) => {
@@ -67,7 +67,7 @@ export default class BalanceService {
                     as: 'Client',
                     include: {
                         model: Job,
-                        required: true,
+                        required: false,
                         where: {
                             'paid': { [Op.is] : null }
                         }

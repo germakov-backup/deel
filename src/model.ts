@@ -9,6 +9,7 @@ export const sequelize = new Sequelize({
 });
 
 export class Profile extends Sequelize.Model {
+    id: number;
     firstName: string;
     lastName: string;
     profession: string;
@@ -44,6 +45,7 @@ Profile.init(
 );
 
 export class Contract extends Sequelize.Model {
+    id: number;
     terms: string;
     status: 'new' | 'in_progress' | 'terminated';
     getJobs: HasManyGetAssociationsMixin<Job>;
@@ -68,6 +70,7 @@ Contract.init(
 );
 
 export class Job extends Sequelize.Model {
+    id: number;
     description: string;
     price: number;
     paid: boolean;    

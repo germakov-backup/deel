@@ -1,8 +1,10 @@
 ﻿import { Profile, Contract, Job } from '../model';
 import { Op } from 'sequelize';
+import {JobDto} from "../dto/jobDto";
+import mappingService from "./mappings";
 
 export default class JobsService {    
-    static async getUnpaidJobs(profileId) {
+    static async getUnpaidJobs(profileId) : Promise<JobDto[]> {
                
         const jobs = await Job.findAll({
             where: {
@@ -30,8 +32,7 @@ export default class JobsService {
                 }
             ]
         });
-        
-        console.log(jobs.map(j => j.toJSON()));
-        return jobs;
+                
+        return jobs.map(j => mappingService.mapJobDto(j));
     }
 }
