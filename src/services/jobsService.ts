@@ -8,7 +8,12 @@ export default class JobsService {
                
         const jobs = await Job.findAll({
             where: {
-                paid: { [Op.is] : null },
+                paid: {
+                    [Op.or]: [
+                        {[Op.is]: null},
+                        {[Op.eq]: 0}
+                    ],
+                },
                 '$Contract.status$': { [Op.eq]: 'in_progress'},
                 [Op.or]: [
                     { '$Contract.Client.id$': { [Op.eq]: profileId } },  

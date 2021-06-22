@@ -18,17 +18,22 @@ export default class BalanceService {
                 lock: true,
                 include: {
                     model: Contract,
-                    include: {
+                    include: [{
                         model: Profile,
                         as: 'Client',
+                        required: true,
                         where: {
                             id: { [Op.eq] : clientId }
                         }
-                    }
+                    },{
+                        model: Profile,
+                        as: 'Contractor',
+                        required: true                        
+                    }]
                 }
             }, t);
             
-            if (!job || !job.Contract || !job.Contract.Client) {
+            if (!job || !job.Contract || !job.Contract.Client || !job.Contract.Contractor) {
                 throw new CustomError('NotFound', "Job details not found");
             }
             
@@ -69,7 +74,12 @@ export default class BalanceService {
                         model: Job,
                         required: false,
                         where: {
-                            'paid': { [Op.is] : null }
+                            paid: {
+                                [Op.or]: [
+                                    {[Op.is]: null},
+                                    {[Op.eq]: 0}
+                                ],
+                            }
                         }
                     }
                 },

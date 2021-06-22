@@ -1,11 +1,10 @@
-import {deflate} from "zlib";
+import dbConfig from "../config/db";
 import {HasManyGetAssociationsMixin, HasOneGetAssociationMixin} from "sequelize";
 
 const Sequelize = require('sequelize');
-
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite3'
+  storage: dbConfig.sqlite.file
 });
 
 export class Profile extends Sequelize.Model {
@@ -49,8 +48,10 @@ export class Contract extends Sequelize.Model {
     terms: string;
     status: 'new' | 'in_progress' | 'terminated';
     getJobs: HasManyGetAssociationsMixin<Job>;
-    Client?: Profile;
-    Contractor?: Profile;
+    Client: Profile;
+    ClientId: number;
+    Contractor: Profile;
+    ContractorId: number;
 }
 
 Contract.init(
@@ -74,9 +75,10 @@ export class Job extends Sequelize.Model {
     description: string;
     price: number;
     paid: boolean;    
-    paymentDate: Date;
+    paymentDate?: Date;
     getContract: HasOneGetAssociationMixin<Contract>;
     Contract?: Contract;
+    ContractId: number;
 }
 
 Job.init(
