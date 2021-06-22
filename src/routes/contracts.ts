@@ -15,7 +15,7 @@ router.get('/:id', async (req: AuthenticatedRequest<ContractByIdParams>, res, ne
         const { id : contractId} = req.params;
         const profileId = req.profile.id;
 
-        const contract = await contractService.getProfileContract(+contractId, profileId).catch(next);
+        const contract = await contractService.getProfileContract(+contractId, profileId);
         res.json(contract).send();
     }, next);
 });
@@ -23,7 +23,7 @@ router.get('/:id', async (req: AuthenticatedRequest<ContractByIdParams>, res, ne
 router.get('/', async (req: AuthenticatedRequest, res, next) => {
     return withErrorHandling( async () => {
         const profileId = req.profile.id;
-        const contracts =  await contractService.getProfileContracts(profileId).catch(next);
+        const contracts =  await contractService.getProfileContracts(profileId);
 
         res.json(contracts || []);
     }, next);
