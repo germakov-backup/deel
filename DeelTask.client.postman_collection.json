@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "feafe755-a538-4ee6-8f57-64b126e7279c",
+		"name": "DeelTask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetContract",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{auth_header}}",
+						"value": "{{profile_id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/contracts/1",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"contracts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contracts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{auth_header}}",
+						"value": "{{profile_id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/contracts",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"contracts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUnpaidJobs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{auth_header}}",
+						"value": "{{profile_id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/jobs/unpaid",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"jobs",
+						"unpaid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PayJob",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{auth_header}}",
+						"value": "{{profile_id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backend}}/jobs/{{job_to_pay}}/pay",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"jobs",
+						"{{job_to_pay}}",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientDeposit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{}}",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backend}}/balances/deposit/{{client_to_deposit}}",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"balances",
+						"deposit",
+						"{{client_to_deposit}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBestProfession",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backend}}/admin/best-profession?start=2020-01-01&end=2022-01-01",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"admin",
+						"best-profession"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-01-01"
+						},
+						{
+							"key": "end",
+							"value": "2022-01-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBestClients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backend}}/admin/best-clients?start=2020-01-01&end=2022-01-01&limit=2",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"admin",
+						"best-clients"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-01-01"
+						},
+						{
+							"key": "end",
+							"value": "2022-01-01"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "backend",
+			"value": "localhost:3001"
+		},
+		{
+			"key": "auth_header",
+			"value": "profile_id"
+		},
+		{
+			"key": "profile_id",
+			"value": "1"
+		},
+		{
+			"key": "job_to_pay",
+			"value": ":job_id"
+		},
+		{
+			"key": "client_to_deposit",
+			"value": "1"
+		}
+	]
+}
