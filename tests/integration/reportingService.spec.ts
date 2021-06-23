@@ -6,7 +6,7 @@ import {ClientReportItem} from "../../src/dto/clientReportDto";
 jest.mock('../../config/db', () => {
     return{
         sqlite: {
-            file: './database.sqlite3.test'
+            file: './tests/db/database.sqlite3.reporting.test'
         }
     };
 });
@@ -76,7 +76,7 @@ describe('reporting service tests', () => {
         const clients = await reportingService.findBestClients(new Date('2021-01-01'), new Date(), 100);
         expect(clients).toEqual(expect.arrayContaining(<Array<ClientReportItem>>[
             {
-                id: 4,
+                id: 3,
                 paid: 200,
                 fullName: 'third third'
             }]));

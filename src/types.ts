@@ -1,6 +1,6 @@
 ﻿import {Request} from 'express';
-import {ProfileDto} from "./dto/profile";
 import * as core from "express-serve-static-core";
+import {ProfileDto} from "./dto/profileDto";
 
 export type AppHeaders = 'profile_id';
 

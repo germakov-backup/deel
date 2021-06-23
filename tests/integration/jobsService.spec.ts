@@ -5,7 +5,7 @@ import {JobDto} from "../../src/dto/jobDto";
 jest.mock('../../config/db', () => {
     return{
         sqlite: {
-            file: './database.sqlite3.test'
+            file: './tests/db/database.sqlite3.jobs.test'
         }
     };
 });

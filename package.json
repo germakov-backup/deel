@@ -11,14 +11,17 @@
   },
   "scripts": {
     "start": "nodemon",
-    "seed": "node ./scripts/seedDb.js",
-    "build": "npx tsc"
+    "seed": "ts-node ./scripts/seedDb.ts",
+    "build": "npx tsc",
+    "test:api": "npx jest --roots tests/api",
+    "test:integration": "npx jest --roots tests/integration"
   },
   "devDependencies": {
     "@types/express": "^4.17.12",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.4",
     "@types/sequelize": "^4.28.9",
+    "axios": "^0.21.1",
     "concurrently": "4.1.0",
     "jest": "^27.0.5",
     "nodemon": "1.19.1",

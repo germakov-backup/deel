@@ -1,16 +1,19 @@
 import profileService from '../services/profileService';
 import {Response} from 'express';
-import {AppHeaders, AuthenticatedRequest} from "../types";
+import {AuthenticatedRequest} from "../types";
 import CustomError from "../customError";
 
 export const getProfile = async (req: AuthenticatedRequest, res: Response, next) => {
     const id = req.get('profile_id');
-    const profile = await profileService.findById(id).catch(next);
-    
-    if(!profile) {
-        next(new CustomError('NotFound', 'Profile not found'));
+    try {
+        req.profile = await profileService.findById(id);
+        next();
     }
-    
-    req.profile = profile;
-    next();
+    catch (e) {
+        if (e instanceof CustomError && e.code === 'NotFound') {
+            return res.status(401).end();            
+        }
+        
+        next(e);
+    }
 }

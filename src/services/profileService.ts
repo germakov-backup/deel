@@ -7,10 +7,16 @@ export default class ProfileService {
             throw new CustomError('Validation', 'Invalid profile Id');
         }
 
-        return await Profile.findOne({
+        const profile = await Profile.findOne({
             where: {
                 id: profileId
             }
         });
+        
+        if (!profile) {
+            throw new CustomError('NotFound', 'Profile not found')
+        }
+        
+        return profile;
     }
 }
