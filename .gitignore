@@ -4,3 +4,5 @@ database.sqlite3
 /.idea/
 /dist/
 /database.sqlite3*
+/tests/db
+/tests/db/*
